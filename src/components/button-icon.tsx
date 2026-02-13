@@ -32,7 +32,7 @@ export const buttonIconVariants = cva(
 
 interface ButtonIconProps
   extends
-    Omit<React.ComponentProps<"button">, "disabled" | "size">,
+    Omit<React.ComponentProps<"button">, "size" | "disabled">,
     VariantProps<typeof buttonIconVariants> {
   icon: React.ComponentProps<typeof Icon>["svg"];
   loading?: boolean;
