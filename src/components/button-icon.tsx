@@ -2,6 +2,7 @@ import React from "react";
 import Icon from "./icon";
 import { cva, type VariantProps } from "class-variance-authority";
 import Skeleton from "./skeleton";
+import SpinnerIcon from "../assets/icons/spinner.svg?react";
 
 export const buttonIconVariants = cva(
   `
@@ -21,11 +22,15 @@ export const buttonIconVariants = cva(
       disabled: {
         true: "opacity-50 pointer-events-none",
       },
+      handling: {
+        true: "pointer-events-none",
+      },
     },
     defaultVariants: {
       variant: "primary",
       size: "sm",
       disabled: false,
+      handling: false,
     },
   },
 );
@@ -36,6 +41,7 @@ interface ButtonIconProps
     VariantProps<typeof buttonIconVariants> {
   icon: React.ComponentProps<typeof Icon>["svg"];
   loading?: boolean;
+  handling?: boolean;
 }
 
 export const buttonIconIconVariants = cva("transition", {
@@ -63,6 +69,7 @@ export default function ButtonIcon({
   className,
   icon,
   loading,
+  handling,
   ...props
 }: ButtonIconProps) {
   if (loading) {
@@ -80,10 +87,20 @@ export default function ButtonIcon({
 
   return (
     <button
-      className={buttonIconVariants({ className, variant, size, disabled })}
+      className={buttonIconVariants({
+        className,
+        variant,
+        size,
+        disabled,
+        handling,
+      })}
       {...props}
     >
-      <Icon className={buttonIconIconVariants({ size, variant })} svg={icon} />
+      <Icon
+        className={buttonIconIconVariants({ size, variant })}
+        animate={handling}
+        svg={handling ? SpinnerIcon : icon}
+      />
     </button>
   );
 }
